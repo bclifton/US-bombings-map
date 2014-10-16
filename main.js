@@ -1,6 +1,4 @@
-var map;
 var username = 'bclifton';
-var colors = ['#e81118', '#277ebb', '#4eaf40', '#974da7', '#ff7d1b', '#fffa37', '#ab5620', '#f87fc0', '#999999', '#63c3a5', '#ff8b5d', '#88a0cd', '#e789c6', '#aad741', '#ffd82f', '#e7c48f', '#b3b3b3', '#bdbbdb', '#ff7e6e', '#ffb359', '#fecce7', '#bb80bf', '#cdeac2'];
 
 function main() {
   // map = new L.mapbox.map('map', 'bclifton.j3dc99p7', {
@@ -10,7 +8,7 @@ function main() {
   //   })
   //   .setView([31.783333, 35.216667], 4);
 
-  map = new L.map('map', {
+  var map = new L.map('map', {
     center: [31.783333, 35.216667],
     zoom: 4,
     minZoom: 3,
@@ -28,7 +26,8 @@ function main() {
 
 
 
-  var muslimCountries = 'http://bclifton.cartodb.com/api/v2/viz/abb2c610-5413-11e4-aeb5-0e018d66dc29/viz.json';
+  var muslimCountries = 'https://bclifton.cartodb.com/api/v2/viz/abb2c610-5413-11e4-aeb5-0e018d66dc29/viz.json';
+
   var muslimStyle = '@basecolor: #1fa03d;'+
     '#wrd_province_religion_muslim[religcatp="95-100%"] {'+
     '   polygon-fill: @basecolor;'+
@@ -59,23 +58,65 @@ function main() {
     '   polygon-opacity: 0;'+
     '}';
 
+
+
+  ////////////////////////////////////////////////
   var layers = [];
 
-  cartodb.createLayer(map, muslimCountries)
+  cartodb.createLayer(map, 'http://bclifton.cartodb.com/api/v2/viz/5b91461e-5424-11e4-97cd-0e853d047bba/viz.json')
     .done(function(layer) {
 
-      map.addLayer(layer);
-      layers.push(layer);
+      // layer.show();
+      layer
+        .on('featureOver', function(e, latlng, pos, data) {
+          console.log(e, latlng, pos, data);
+        });
 
-      layer.createSubLayer({
-        sql: 'SELECT * FROM wrd_province_religion_muslim',
-        cartocss: muslimStyle
-      });
+      // console.log(layer.getSubLayerCount());
 
-    })
-    .on('error', function(err) {
-      console.log('error: ', err);
+      // var slider = vis.getOverlay('time_slider');
+      // slider.formatter(function(d) {
+      //   return "month:" + d.getUTCMonth();
+      // });
     });
+
+  // cartodb.Tiles.getTiles({
+  //   user_name: 'bclifton',
+  //   sublayers: [{
+  //     sql: "SELECT * FROM table_name",
+  //     cartocss: '#layer { marker-fill: #F0F0F0; }'
+  //   }],
+  //   tiler_protocol: 'https', // not required
+  //   tiler_host: 'cartodb.com', // not required
+  //   tiler_port: 80 // not required
+  // });
+
+
+  // cartodb.createLayer(map, muslimCountries)
+  //   .addTo(map)
+  //   .on('done', function(layer) {
+  //
+  //
+  //     var slider = vis.getOverlay('time_slider');
+  //     slider.formatter(function(d) {
+  //       return "month:" + d.getUTCMonth();
+  //     });
+  //
+  //     console.log(layer);
+  //     map.addLayer(layer);
+  //     // layers.push(layer);
+  //     //
+  //     // layer.createSubLayer({
+  //     //   sql: 'SELECT * FROM wrd_province_religion_muslim',
+  //     //   cartocss: muslimStyle
+  //     // });
+  //
+  //   })
+  //   .on('error', function(err) {
+  //     console.log('error: ', err);
+  //   });
+
+
 
 
 
@@ -138,7 +179,7 @@ function main() {
     '#ds_aa_nla_isil_static[frame-offset=3] {'+
     ' marker-width:7.5;'+
     ' marker-fill-opacity:0.125; '+
-    '}'
+    '}';
 
 
 
@@ -187,54 +228,6 @@ function main() {
   //   .on('error', function(err) {
   //     console.log('error: ', err);
   //   });
-
-  //  {
-  //   center: [31.783333, 35.216667],
-  //   zoom: 4,
-  //   minZoom: 3,
-  //   maxZoom: 6,
-  //   zoomControl: true
-  // });
-
-
-
-
-
-  // var layers = [];
-  //
-  //
-  //   .done(function(layer) {
-  //
-  //     console.log('layer:', layer);
-  //     map.addLayer(layer)
-  //     layers.push(layer);
-  //
-  //     // torque of bombings map:
-  //     layer.createSubLayer({
-  //       sql: "SELECT * FROM ds_aa_nla_isil WHERE (date >= ('2009-01-01T00:00:00-00:00') AND date <= ('2014-10--10T20:00:00-04:00'))",
-
-  //     // cartocss: 'Map { -torque-frame-count:128; -torque-animation-duration:15; -torque-time-attribute:"date"; -torque-aggregation-function:"count(cartodb_id)"; -torque-resolution:1; -torque-data-aggregation:linear;} #ds_aa_nla_isil{ comp-op: lighter; marker-fill-opacity: 0.9; marker-line-color: #FF5C00; marker-line-width: 0.25; marker-line-opacity: 1; marker-type: ellipse; marker-width: 6; marker-fill: #FFA300; } #ds_aa_nla_isil[frame-offset=1] { marker-width:8; marker-fill-opacity:0.45; } #ds_aa_nla_isil[frame-offset=2] { marker-width:10; marker-fill-opacity:0.225; } #ds_aa_nla_isil[frame-offset=3] { marker-width:12; marker-fill-opacity:0.15; } #ds_aa_nla_isil[frame-offset=4] { marker-width:14; marker-fill-opacity:0.1125; }'
-  //     });
-  //
-  //
-  //   }); // ends cartodb.createLayer()
-
-  // cartodb.createLayer(map, layerUrl)
-  //   .done(function(layer) {
-
-  //     map.addLayer(layer)
-  //     layers.push(layer);
-
-  //     // outline Syria map:
-  //     layer.createSubLayer({
-  //       sql: "SELECT * FROM ne_10m_admin_0_countries WHERE admin ILIKE '%Syria%'",
-  //       cartocss: '#ne_10m_admin_0_countries{ polygon-fill: #FFFFFF; polygon-opacity: 0; line-color: #595757; line-width: 1; line-opacity: 0.7; }'
-  //     });
-
-
-  //   }); // ends cartodb.createLayer()
-
-
 
 } // ends main()
 
