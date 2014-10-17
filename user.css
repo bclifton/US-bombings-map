@@ -1,0 +1,73 @@
+#torque-slider {
+  position:absolute;
+  bottom:30px;
+  right:25px;
+  width:300px;
+  background-color: white;
+  z-index:5;
+}
+
+#torque-toggle {
+/*   position:absolute;
+bottom:24px;
+right:345px;
+width:28px;
+height: 26px;
+padding: 1px 2px 2px 2px;
+z-index: 1000;
+border-radius: 3px;
+cursor: pointer; */
+  /* background-color: white; */
+
+
+
+
+  display: block;
+  width: 48px;
+  height: 40px;
+  text-indent: -9999px;
+  line-height: 0;
+  font-size: 0;
+  background: url(img/slider.png) no-repeat -2px -55px;
+  /* background-repeat:no-repeat; */
+  /* background-position:center; */
+  outline: none;
+}
+
+.playing {
+  display: block;
+  width: 48px;
+  height: 40px;
+  /* background-color: white; */
+  background-position: -42px -4px;
+  /* background: url(img/slider.png) no-repeat -2px -55px; */
+  /* background-position:center; */
+}
+
+#torque-time {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  width: 200px;
+  color: #555;
+  /*background-color: rgba(239, 239, 239, .5);*/
+  font-size: 31px;
+  font-family: Georgia, serif;
+  z-index: 5;
+  padding: 5px;
+  text-align:center;
+}
+
+/* #nav {
+  position: absolute;
+  top: 500px;
+  left: 50%;
+}
+ */
+
+#nav {
+  position: absolute;
+  top: 550px;
+  left: 400px;
+  width: 400px;
+}
