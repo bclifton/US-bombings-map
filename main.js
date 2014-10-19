@@ -3,7 +3,8 @@ var username = 'bclifton';
 function main() {
 
   var map = new L.map('map', {
-    center: [31.783333, 35.216667],
+    // center: [31.783333, 35.216667],
+    center: [21.416667, 39.816667],
     zoom: 4,
     minZoom: 3,
     maxZoom: 7
@@ -53,9 +54,9 @@ function main() {
 
   var bombBlastsTorque = new L.TorqueLayer({
     user: 'bclifton',
-    table: 'ds_aa_nla_isil',
+    table: 'bombingsdata2_1',
     cartocss: torqueStyle,
-    sql: "SELECT * FROM ds_aa_nla_isil WHERE (date >= ('2009-01-01T00:00:00-00:00') AND date <= ('2014-10-10T00:00:00-00:00'))",
+    sql: "SELECT * FROM bombingsdata2_1 WHERE (date >= ('2009-12-10T00:00:00-00:00') AND date <= ('2014-10-10T00:00:00-00:00'))",
     tiler_protocol: 'https',
     tiler_port: 443
   });
@@ -64,8 +65,111 @@ function main() {
   bombBlastsTorque.addTo(map);
   bombBlastsTorque.play();
 
-  init_slider(bombBlastsTorque);
 
+
+  d3.csv('assets/Bombings_deathsByDate.csv', function(data) {
+    // console.log(data);
+
+    var deathsByDate = {};
+    var totalDeaths = 0;
+
+    _.each(data, function(entry) {
+      var date = entry['Row Labels'];
+      deathsByDate[date] = {
+        'deaths_max': entry['Sum of deaths_max'],
+        'deaths_children': entry['Sum of children']
+      };
+    });
+
+    console.log(deathsByDate);
+
+    init_slider(bombBlastsTorque);
+
+    // var bodies = d3.select('#bodies')
+    //   .append('svg')
+    //   .attr('width', '20px')
+    //   .attr('height', '20px')
+    //   .append('rect')
+    //   .attr('x', 0)
+    //   .attr('y', 0)
+    //   .attr('width', '20px')
+    //   .attr('height', '20px')
+    //   .attr('fill', 'red');
+
+
+
+
+
+    function init_slider(torqueLayer) {
+      var torqueTime = $('#torque-time');
+      $("#torque-slider").slider({
+        min: 0,
+        max: torqueLayer.options.steps,
+        value: 0,
+        step: 1,
+        slide: function(event, ui){
+          var step = ui.value;
+          torqueLayer.setStep(step);
+        }
+      });
+
+      // console.log(torqueLayer.options);
+
+
+
+      // each time time changes, move the slider
+      torqueLayer.on('change:time', function(changes) {
+        $("#torque-slider" ).slider({
+          value: changes.step
+        });
+
+        var month_year = changes.time.toString().substr(4).split(' ');
+
+        // console.log(changes.step);
+        if (changes.step === 0) {
+          totalDeaths = 0;
+          $('#bodies').empty();
+        }
+
+        var torqueDate = moment(changes.time).format('MM/DD/YY');
+
+        $('.ui-slider-handle').html('' + moment(changes.time).format('MMM. YYYY'));
+
+        if (deathsByDate[torqueDate]) {
+          totalDeaths += +deathsByDate[torqueDate].deaths_max
+          console.log(totalDeaths);
+
+          for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {
+            d3.select('#bodies')
+                .append('svg')
+                .attr('width', '20px')
+                .attr('height', '20px')
+                .append('rect')
+                .attr('x', 1)
+                .attr('y', 0)
+                .attr('width', '20px')
+                .attr('height', '20px');
+          }
+          // console.log(deathsByDate[torqueDate].deaths_max);
+        }
+
+
+        //As long as the date is undefined (at the very start) do not display the date
+        if(typeof month_year[2] === 'undefined') {
+          console.log(month_year[2]);
+        } else {
+          torqueTime.text(moment(changes.time).format('MMMM YYYY'));
+        }
+      });
+
+      // play-pause toggle
+      $(".ui-play-pause").click(function(){
+        torqueLayer.toggle();
+        $(this).toggleClass('glyphicon-pause');
+      });
+    };
+
+  });
   // $('#pause').on('click', function() {
   //   console.log('pause');
   //   bombBlastsTorque.toggle();
@@ -89,42 +193,6 @@ function main() {
   /**
 		   * inits slider and a small play/pause button
 		   */
-		  function init_slider(torqueLayer) {
-  			var torqueTime = $('#torque-time');
-  			$("#torque-slider").slider({
-  				min: 0,
-  				max: torqueLayer.options.steps,
-  				value: 0,
-  				step: 1,
-  				slide: function(event, ui){
-  				  var step = ui.value;
-  				  torqueLayer.setStep(step);
-  				}
-  			});
-
-  			// each time time changes, move the slider
-  			torqueLayer.on('change:time', function(changes) {
-  			  $("#torque-slider" ).slider({
-            value: changes.step
-          });
-  			  var month_year = changes.time.toString().substr(4).split(' ');
-
-          console.log(moment(changes.time).format('MMMM YYYY'));
-
-  			  //As long as the date is undefined (at the very start) do not display the date
-  			  if(typeof month_year[2] === 'undefined') {
-    				console.log(month_year[2]);
-  			  } else {
-            torqueTime.text(moment(changes.time).format('MMMM YYYY'));
-  			  }
-  			});
-
-  			// play-pause toggle
-  			$("#torque-toggle").click(function(){
-  			  torqueLayer.toggle();
-  			  $(this).toggleClass('playing');
-  			});
-		  };
 
 
 
