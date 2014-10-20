@@ -7,10 +7,16 @@ function getRandomArbitrary(min, max) {
 
 function main() {
 
+  var height = ($(window).height() / 2);
+  console.log('height', height);
+
+  $('#map').css('height', height);
+
+
   var map = new L.map('map', {
     // center: [31.783333, 35.216667],
-    center: [19.416667, 42.816667],
-    zoom: 4,
+    center: [22.416667, 42.816667],
+    zoom: 3,
     minZoom: 3,
     maxZoom: 7
   });
@@ -32,7 +38,7 @@ function main() {
     '-torque-data-aggregation:cumulative;'+
     '}'+
     ''+
-    '#bombingsdata2_1{'+
+    '#usairstrikes1csv{'+
     '  comp-op: lighter;'+
     '  marker-fill-opacity: 0.75;'+
     '  marker-line-color: #FFF;'+
@@ -41,43 +47,43 @@ function main() {
     '  marker-type: ellipse;'+
     '  marker-width: 1.5;'+
     '  marker-fill: #6d470e;'+
-    // '  [zoom > 5] {'+
-    // '    marker-width: 3.5;'+
-    // '    marker-fill-opacity:0.75'+
-    // '  }'+
+    '  [zoom > 5] {'+
+    '    marker-width: 3.5;'+
+    '    marker-fill-opacity:0.75'+
+    '  }'+
     '}'+
-    '#bombingsdata2_1[frame-offset=1] {'+
+    '#usairstrikes1csv[frame-offset=1] {'+
     ' marker-width:3.5;'+
     ' marker-fill-opacity:0.375; '+
-    // '  [zoom > 5] {'+
-    // '    marker-width: 5.5;'+
-    // '    marker-fill-opacity:0.375'+
-    // '  }'+
+    '  [zoom > 6][frame-offset=1] {'+
+    '    marker-width: 7;'+
+    '    marker-fill-opacity:0.375'+
+    '  }'+
     '}'+
-    '#bombingsdata2_1[frame-offset=2] {'+
+    '#usairstrikes1csv[frame-offset=2] {'+
     ' marker-width:5.5;'+
     ' marker-fill-opacity:0.1875; '+
-    // '  [zoom > 5] {'+
-    // '    marker-width: 7.5;'+
-    // '    marker-fill-opacity:0.1875'+
-    // '  }'+
+    '  [zoom > 6][frame-offset=2] {'+
+    '    marker-width: 11;'+
+    '    marker-fill-opacity:0.1875'+
+    '  }'+
     '}'+
-    '#bombingsdata2_1[frame-offset=3] {'+
+    '#usairstrikes1csv[frame-offset=3] {'+
     ' marker-width:7.5;'+
     ' marker-fill-opacity:0.125; '+
-    // '  [zoom > 5] {'+
-    // '    marker-width: 9.5;'+
-    // '    marker-fill-opacity:0.125'+
-    // '  }'+
+    '  [zoom > 6][frame-offset=3] {'+
+    '    marker-width: 15;'+
+    '    marker-fill-opacity:0.125'+
+    '  }'+
     '}';
 
 
 
   var bombBlastsTorque = new L.TorqueLayer({
     user: 'bclifton',
-    table: 'bombingsdata2_1',
+    table: 'usairstrikes1csv',
     cartocss: torqueStyle,
-    sql: "SELECT * FROM bombingsdata2_1 WHERE (date >= ('2009-12-10T00:00:00-00:00') AND date <= ('2014-10-10T00:00:00-00:00'))",
+    sql: "SELECT * FROM usairstrikes1csv WHERE (date >= ('2009-12-10T00:00:00-00:00') AND date <= ('2014-10-20T00:00:00-00:00'))",
     tiler_protocol: 'https',
     tiler_port: 443
   });
