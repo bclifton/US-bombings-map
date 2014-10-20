@@ -1,10 +1,15 @@
 var username = 'bclifton';
 
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+
 function main() {
 
   var map = new L.map('map', {
     // center: [31.783333, 35.216667],
-    center: [21.416667, 39.816667],
+    center: [19.416667, 42.816667],
     zoom: 4,
     minZoom: 3,
     maxZoom: 7
@@ -13,7 +18,7 @@ function main() {
   // creates the MapBox baselayer:
   L.mapbox.tileLayer('bclifton.j3dc99p7', {
     accessToken: 'pk.eyJ1IjoiYmNsaWZ0b24iLCJhIjoicWNXT0Z6OCJ9.JvNO6GIbU8BZ-8LLSEwz2Q',
-    attribution: 'Brian Clifton'
+    attribution: 'Brian Clifton | CartoDB | MapBox'
   }).addTo(map);
 
 
@@ -27,7 +32,7 @@ function main() {
     '-torque-data-aggregation:cumulative;'+
     '}'+
     ''+
-    '#ds_aa_nla_isil_static{'+
+    '#bombingsdata2_1{'+
     '  comp-op: lighter;'+
     '  marker-fill-opacity: 0.75;'+
     '  marker-line-color: #FFF;'+
@@ -36,18 +41,34 @@ function main() {
     '  marker-type: ellipse;'+
     '  marker-width: 1.5;'+
     '  marker-fill: #6d470e;'+
+    // '  [zoom > 5] {'+
+    // '    marker-width: 3.5;'+
+    // '    marker-fill-opacity:0.75'+
+    // '  }'+
     '}'+
-    '#ds_aa_nla_isil_static[frame-offset=1] {'+
+    '#bombingsdata2_1[frame-offset=1] {'+
     ' marker-width:3.5;'+
     ' marker-fill-opacity:0.375; '+
+    // '  [zoom > 5] {'+
+    // '    marker-width: 5.5;'+
+    // '    marker-fill-opacity:0.375'+
+    // '  }'+
     '}'+
-    '#ds_aa_nla_isil_static[frame-offset=2] {'+
+    '#bombingsdata2_1[frame-offset=2] {'+
     ' marker-width:5.5;'+
     ' marker-fill-opacity:0.1875; '+
+    // '  [zoom > 5] {'+
+    // '    marker-width: 7.5;'+
+    // '    marker-fill-opacity:0.1875'+
+    // '  }'+
     '}'+
-    '#ds_aa_nla_isil_static[frame-offset=3] {'+
+    '#bombingsdata2_1[frame-offset=3] {'+
     ' marker-width:7.5;'+
     ' marker-fill-opacity:0.125; '+
+    // '  [zoom > 5] {'+
+    // '    marker-width: 9.5;'+
+    // '    marker-fill-opacity:0.125'+
+    // '  }'+
     '}';
 
 
@@ -72,6 +93,7 @@ function main() {
 
     var deathsByDate = {};
     var totalDeaths = 0;
+    var childDeaths = 0;
 
     _.each(data, function(entry) {
       var date = entry['Row Labels'];
@@ -113,9 +135,12 @@ function main() {
         }
       });
 
-      // console.log(torqueLayer.options);
+      console.log('steps', torqueLayer.options.steps);
 
-
+      torqueLayer.toggle();
+      setTimeout(function(){
+        torqueLayer.toggle();
+      }, 1500);
 
       // each time time changes, move the slider
       torqueLayer.on('change:time', function(changes) {
@@ -123,12 +148,23 @@ function main() {
           value: changes.step
         });
 
+        // showEvent(changes, torqueLayer, '04-11-11', '#libya');
+
         var month_year = changes.time.toString().substr(4).split(' ');
 
-        // console.log(changes.step);
+        // resets the 'bodies' seciton:
         if (changes.step === 0) {
           totalDeaths = 0;
           $('#bodies').empty();
+          
+        }
+
+        // pauses at the end of the slider:
+        if (changes.step === 1023) {
+          torqueLayer.toggle();
+          setTimeout(function(){
+            torqueLayer.toggle();
+          }, 3000);
         }
 
         var torqueDate = moment(changes.time).format('MM/DD/YY');
@@ -136,21 +172,36 @@ function main() {
         $('.ui-slider-handle').html('' + moment(changes.time).format('MMM. YYYY'));
 
         if (deathsByDate[torqueDate]) {
-          totalDeaths += +deathsByDate[torqueDate].deaths_max
-          console.log(totalDeaths);
+          totalDeaths += +deathsByDate[torqueDate].deaths_max;
+          childDeaths += +deathsByDate[torqueDate].deaths_children;
 
-          for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {
-            d3.select('#bodies')
-                .append('svg')
-                .attr('width', '20px')
-                .attr('height', '20px')
-                .append('rect')
-                .attr('x', 1)
-                .attr('y', 0)
-                .attr('width', '20px')
-                .attr('height', '20px');
+          $('#bodyCount').html(totalDeaths);
+          $('#childrenBodyCount').html(childDeaths);
+
+          // draws the adult body svgs:
+          for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {         
+            var margin = getRandomArbitrary(-3, 5);
+            var r = Math.random()*10;
+
+            if (r > 3) {
+              var num = getRandomArbitrary(1, 14);
+              $('#bodies').append('<img src="img/man-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
+            } else {
+              var num = getRandomArbitrary(1, 9);
+              $('#bodies').append('<img src="img/woman-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
+            }
           }
-          // console.log(deathsByDate[torqueDate].deaths_max);
+
+          // draws the children body svgs:
+          for (var i = 0; i < +deathsByDate[torqueDate].deaths_children; i++) {         
+
+            var margin = getRandomArbitrary(-3, 5);
+            var num = getRandomArbitrary(1, 13);
+            $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
+            
+          }
+
+
         }
 
 
@@ -170,23 +221,7 @@ function main() {
     };
 
   });
-  // $('#pause').on('click', function() {
-  //   console.log('pause');
-  //   bombBlastsTorque.toggle();
-  //   console.log(bombBlastsTorque.getTime());
-  // });
-  // $('#start').on('click', function() {
-  //   console.log('play');
-  //   bombBlastsTorque.play();
-  //   console.log(bombBlastsTorque.getTime());
-  // });
-  // $('#stop').on('click', function() {
-  //   console.log('stop');
-  //   // bombBlastsTorque.stop();
-  //   bombBlastsTorque.setStep(100)
-  //   console.log(bombBlastsTorque.getTime());
-  // });
-  //
+
 
 /////////////////
 
@@ -194,6 +229,20 @@ function main() {
 		   * inits slider and a small play/pause button
 		   */
 
+  function showEvent(changes, torqueLayer, dayTrigger, eventID) {
+    if (moment(changes.time).format('MM-DD-YY') === dayTrigger) {
+
+      console.log('event Triggered');
+      // Show the event:
+      // d3.select(eventID).classed('visible', true);
+
+      torqueLayer.toggle();
+
+      setTimeout(function(){
+        torqueLayer.toggle();
+      }, 1000);
+    }
+  }
 
 
 } // ends main()

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -20,22 +21,28 @@
     <![endif]-->
   </head>
   <body>
+    
+
     <div class="map" id="map" style="height: 500px;"></div>
 
-    <!--
-    <h2>Title</h2>
-    <iframe width='100%' height='520' frameborder='0' src='http://bclifton.cartodb.com/viz/5b91461e-5424-11e4-97cd-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-  -->
-    <!-- <div id="bodies"></div> -->
+    <div id="content">
 
-    <div id="nav">
-      <div id="torque-time"></div>
-      <i class="ui-play-pause glyphicon glyphicon-play playing" href="#"></i>
-      <div id="torque-slider"></div>
-    </div>
+      <div id="header">
+        <h1 id="title">US Airstrikes Since Barack Obama Won the Nobel Peace Prize in 2009</h1>
+      </div>
 
-    <div id="article">
-      <h2 class="title">SYRIA BECOMES THE 7TH PREDOMINANTLY MUSLIM COUNTRY BOMBED BY 2009 NOBEL PEACE LAUREATE</h2>
+      <div id="nav">
+        <i class="ui-play-pause glyphicon glyphicon-play playing" href="#"></i>
+        <div id="torque-slider"></div>
+        <!-- <div id="blank"></div> -->
+      </div>
+
+      <div>
+        <h4 id="bodyCount"></h4>
+        <h4 id="childrenBodyCount"></h4>
+      </div>
+      <div id="bodies"></div>
+      <!-- <div id="children"></div> -->
 
     </div>
 

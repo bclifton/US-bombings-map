@@ -1,8 +1,43 @@
+body {
+  font-family: 'Oswald', 'Helvetica', sans-serif;
+}
+
+.map{
+  background-color:#eee;
+  position: relative;
+  top: 0px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height:100%; 
+}
+
+#nav {
+/*  position: absolute;
+  top: 457px;
+  left: 140px;*/
+  /*width: 400px;*/
+}
+
+div#content {
+width: 80%;
+margin: 0 auto;
+}
+
 #bodies {
-  background-color: rgba(0,0,0,0.08);
+/* position: absolute; */
+/* top: 500px; */
+/* left: 30px; */
+/* right: 30px; */
+width: 100%;
+height: 400px;
+}
+
+#children {
   position: absolute;
   top: 500px;
-  width: 100%;
+  right: 30px;
+  width: 45%;
   height: 400px;
 }
 
@@ -14,15 +49,15 @@ svg {
   margin: -1px 0;
 }
 
-.map{
-  background-color:#eee;
-  position: relative;
-  top: 0px;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  /* height:100%; */
+#bodies img {
+  height: 20px;
 }
+
+#children img {
+  height: 20px;
+}
+
+
 
 #torque-toggle {
 /*   position:absolute;
@@ -78,12 +113,6 @@ cursor: pointer; */
 }
  */
 
-#nav {
-  position: absolute;
-  top: 550px;
-  left: 400px;
-  width: 400px;
-}
 
 
 /*=========================*/
@@ -94,13 +123,6 @@ cursor: pointer; */
   stroke-width: 1.25px;
 }
  */
-
-#nav {
-  position: absolute;
-top: 457px;
-left: 400px;
-width: 400px;
-}
 
 
 #date {
@@ -124,52 +146,64 @@ width: 400px;
   height:43px;
 }
 #nav .ui-slider-handle {
-  cursor:pointer;
+  cursor: pointer;
   background: rgb(173, 173, 173);
-  pointer-events:none;
+  pointer-events: none;
   border: none;
-  height: 43px;
+  height: 30px;
   width: 100px;
-  top: 0;
-  position: absolute;
+  /* top: 0; */
+  /* position: absolute; */
   z-index: 400;
   left: -40px;
   color: #FFF;
-  font-size: 16px;
-  padding: 6px;
-  padding-left: 6px;
-  padding-top: 8px;
+  font-size: 15px;
+  /* padding: 6px; */
+  /* padding-left: 6px; */
+  padding-top: 3px;
+  font-family: 'Oswald', 'Helvetica', sans-serif;
+  text-align: center;
+  text-decoration: none;
 }
 #nav .ui-play-pause {
-  cursor:pointer;
+  cursor: pointer;
   background: #555;
   border: none;
-  width: 40px;
-  height: 43px;
-  top: 0;
-  position: absolute;
+  width: 26px;
+  height: 30px;
+  /* top: 0; */
+  /* position: absolute; */
   z-index: 400;
-  left: -40px;
+  /* left: -40px; */
   color: #FFF;
-  font-size: 2em;
+  font-size: 1em;
   padding: 6px;
   padding-left: 6px;
+  display: inline-block;
   padding-top: 7px;
 }
 
 #torque-slider {
-/* position: absolute;
-bottom: 30px;
-right: 25px;
-width: 300px; */
 background-color: rgba(226, 226, 226, 0.75);
 z-index: 5;
-cursor:pointer;
-width:100%;
-height:43px;
+cursor: pointer;
+width: 86%;
+/*display: inline-block;*/
+height: 30px;
+position: relative;
+top: -29px;
+left: 25px;
 }
 
-
+/*#blank {
+  width: 100px;
+  height: 25px;
+  background-color: rgba(226, 226, 226, 0.75); 
+  display: inline-block;
+  position: relative;
+  top: -29px;
+}
+*/
 .ui-widget-content {
 border: none;
 background: none;
@@ -209,6 +243,13 @@ cursor: pointer
 
 }
 
-.title {
-  color: rgb(51, 51, 51);
+#title {
+  color: #555;
+  text-align: center;
+  font-size: 48px;
+}
+
+#header {
+  width: 80%;
+  margin: 0 auto;
 }
