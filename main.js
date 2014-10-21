@@ -225,9 +225,7 @@ function main() {
         $(this).toggleClass('glyphicon-pause');
       });
     };
-
-  });
-
+});
 
 /////////////////
 
