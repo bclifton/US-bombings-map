@@ -13,6 +13,11 @@ body {
   border-bottom: 1px solid rgb(220, 220, 220);
 }
 
+p {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
+}
+
 #nav {
 /*  position: absolute;
   top: 457px;
@@ -52,10 +57,7 @@ svg {
 
 #bodies img {
   height: 30px;
-}
-
-#children img {
-  height: 20px;
+  visibility: hidden;;
 }
 
 

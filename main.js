@@ -7,7 +7,7 @@ function getRandomArbitrary(min, max) {
 
 function main() {
 
-  var height = ($(window).height() / 2);
+  var height = ($(window).height() / 2) - 20;
   console.log('height', height);
 
   $('#map').css('height', height);
@@ -94,38 +94,84 @@ function main() {
 
 
 
-  d3.csv('assets/Bombings_deathsByDate.csv', function(data) {
-    // console.log(data);
+  d3.csv('assets/USairstrikes_deathsByDate.csv', function(data) {
+    console.log(data);
 
     var deathsByDate = {};
     var totalDeaths = 0;
     var childDeaths = 0;
+    var grandTotal_max;
+    var grandTotal_children;
+    var idsArray = [];
+    var tempArrays = [];
 
     _.each(data, function(entry) {
-      var date = entry['Row Labels'];
-      deathsByDate[date] = {
-        'deaths_max': entry['Sum of deaths_max'],
-        'deaths_children': entry['Sum of children']
-      };
+
+      // console.log(entry['Row Labels']);
+
+      if (entry['Row Labels'] === 'Grand Total') {
+        grandTotal_max = entry['Sum of deaths_max'];
+        grandTotal_children = entry['Sum of children'];
+      } else {
+        
+        var date = moment(entry['Row Labels']).format('MM-DD-YY');
+        var id = moment(entry['Row Labels']).format('YYYYMMDD');
+
+        idsArray.push(id);
+
+        deathsByDate[date] = {
+          'deaths_max': entry['Sum of deaths_max'],
+          'deaths_children': entry['Sum of children']
+        };
+
+        for (var i = 0; i < +deathsByDate[date].deaths_max; i++) {         
+          var margin = getRandomArbitrary(-3, 5);
+          var r = Math.random()*10;
+
+          if (r > 3) {
+            var num = getRandomArbitrary(1, 14);
+            $('#bodies').append('<img src="img/man-'+ num +'.svg" style="margin-left:'+ margin +'px;" class='+id+'>');
+          } else {
+            var num = getRandomArbitrary(1, 9);
+            $('#bodies').append('<img src="img/woman-'+ num +'.svg" style="margin-left:'+ margin +'px;" class='+id+'>');
+          }
+        }
+
+        for (var i = 0; i < +deathsByDate[date].deaths_children; i++) {         
+
+          var margin = getRandomArbitrary(-3, 5);
+          var num = getRandomArbitrary(1, 13);
+          $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;" class='+id+'>');
+          
+        }
+      }
     });
 
-    console.log(deathsByDate);
+
+
+
+
+
+
+    // deathsByDate['Invalid date']['Sum of deaths_max'] = 0;
+    // deathsByDate['Invalid date']['Sum of children'] = 0;
+    console.log('dbd', deathsByDate);
+    console.log('gtm', grandTotal_max);
+    console.log('gtc', grandTotal_children);
+    console.log('ids', idsArray);
+
+    var totalPeopleSvgs = grandTotal_max - grandTotal_children;
 
     init_slider(bombBlastsTorque);
 
-    // var bodies = d3.select('#bodies')
-    //   .append('svg')
-    //   .attr('width', '20px')
-    //   .attr('height', '20px')
-    //   .append('rect')
-    //   .attr('x', 0)
-    //   .attr('y', 0)
-    //   .attr('width', '20px')
-    //   .attr('height', '20px')
-    //   .attr('fill', 'red');
+
+    // Create bodies:
 
 
 
+    
+
+    
 
 
     function init_slider(torqueLayer) {
@@ -141,12 +187,15 @@ function main() {
         }
       });
 
-      console.log('steps', torqueLayer.options.steps);
+      // console.log('steps', torqueLayer.options.steps);
 
       torqueLayer.toggle();
       setTimeout(function(){
         torqueLayer.toggle();
       }, 1500);
+
+
+
 
       // each time time changes, move the slider
       torqueLayer.on('change:time', function(changes) {
@@ -162,7 +211,8 @@ function main() {
         if (changes.step === 0) {
           totalDeaths = 0;
           $('#bodies').empty();
-          
+          $('#bodyCount').html('0');
+          $('#childrenBodyCount').html('0');
         }
 
         // pauses at the end of the slider:
@@ -173,11 +223,28 @@ function main() {
           }, 3000);
         }
 
-        var torqueDate = moment(changes.time).format('MM/DD/YY');
+        var torqueDate = moment(changes.time).format('MM-DD-YY');
+        var tempId = moment(changes.time).format('YYYYMMDD');
+        tempArrays.push(tempId);
+
+
+        var intersection = _.intersection(idsArray, tempArrays);
+        console.log('intersection', intersection);
+
+        _.each(intersection, function(item) {
+          console.log('item', item);
+          // console.log('each', $('".'+item+'"'));
+          // $('".'+item+'"').show();
+          var search = '.'+item;
+          $(search).css('visibility', 'visible');
+
+        });
+
 
         $('.ui-slider-handle').html('' + moment(changes.time).format('MMM. YYYY'));
 
         if (deathsByDate[torqueDate]) {
+
           totalDeaths += +deathsByDate[torqueDate].deaths_max;
           childDeaths += +deathsByDate[torqueDate].deaths_children;
 
@@ -185,27 +252,14 @@ function main() {
           $('#childrenBodyCount').html(childDeaths);
 
           // draws the adult body svgs:
-          for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {         
-            var margin = getRandomArbitrary(-3, 5);
-            var r = Math.random()*10;
+          // for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {         
+          //   $('#bodies')
+          // }
 
-            if (r > 3) {
-              var num = getRandomArbitrary(1, 14);
-              $('#bodies').append('<img src="img/man-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
-            } else {
-              var num = getRandomArbitrary(1, 9);
-              $('#bodies').append('<img src="img/woman-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
-            }
-          }
-
-          // draws the children body svgs:
-          for (var i = 0; i < +deathsByDate[torqueDate].deaths_children; i++) {         
-
-            var margin = getRandomArbitrary(-3, 5);
-            var num = getRandomArbitrary(1, 13);
-            $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
-            
-          }
+          // // draws the children body svgs:
+          // for (var i = 0; i < +deathsByDate[torqueDate].deaths_children; i++) {         
+          //   $('#bodies').fadeIn('fast');
+          // }
 
 
         }
