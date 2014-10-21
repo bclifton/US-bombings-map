@@ -141,7 +141,7 @@ function main() {
 
           var margin = getRandomArbitrary(-3, 5);
           var num = getRandomArbitrary(1, 13);
-          $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;" class='+id+'>');
+          $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;" class='+id+'>>');
           
         }
       }
