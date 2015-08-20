@@ -20,6 +20,26 @@ body {
   /*width: 400px;*/
 }
 
+p {
+  font-family: 'Source Sans Pro';
+  font-weight: 300;
+}
+
+h2 {
+margin-top: 2px;
+}
+/*a {
+color: cornflowerblue;
+text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}*/
+
+#list {
+margin-top: -12px;
+}
+
 div#content {
 width: 80%;
 margin: 0 auto;
@@ -276,5 +296,5 @@ text-align: center;
   font-size: 12px;
   text-align: center;
   color: lightgray;
-  margin: -5px;
+  margin: -5px -5px 0 -5px;
 }

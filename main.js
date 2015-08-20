@@ -24,11 +24,11 @@ function main() {
   // creates the MapBox baselayer:
   L.mapbox.tileLayer('bclifton.j3dc99p7', {
     accessToken: 'pk.eyJ1IjoiYmNsaWZ0b24iLCJhIjoicWNXT0Z6OCJ9.JvNO6GIbU8BZ-8LLSEwz2Q',
-    attribution: 'Brian Clifton | CartoDB | MapBox'
+    attribution: 'Brian Clifton | <a href="http://cartodb.com/">CartoDB</a> | <a href="https://www.mapbox.com/">MapBox</a>'
   }).addTo(map);
 
 
-  var torqueStyle = /** torque visualization */
+  var torqueStyle = 
     'Map {'+
     '-torque-frame-count:1024;'+
     '-torque-animation-duration:30;'+
@@ -77,8 +77,6 @@ function main() {
     '  }'+
     '}';
 
-
-
   var bombBlastsTorque = new L.TorqueLayer({
     user: 'bclifton',
     table: 'usairstrikes1csv',
@@ -88,10 +86,8 @@ function main() {
     tiler_port: 443
   });
 
-
   bombBlastsTorque.addTo(map);
   bombBlastsTorque.play();
-
 
 
   d3.csv('assets/Bombings_deathsByDate.csv', function(data) {
@@ -126,8 +122,6 @@ function main() {
 
 
 
-
-
     function init_slider(torqueLayer) {
       var torqueTime = $('#torque-time');
       $("#torque-slider").slider({
@@ -136,10 +130,46 @@ function main() {
         value: 0,
         step: 1,
         slide: function(event, ui){
+          // #torque.slider
           var step = ui.value;
           torqueLayer.setStep(step);
         }
       });
+
+
+
+      // var scrollPane = $('#nav');
+      // var scrollContent = $('.scroll-bar-wrap');
+      // var handleHelper = torqueTime.find('.ui-slider-handle').parent();
+      // console.log('handleHelper', handleHelper);
+
+      // function sizeScrollbar() {
+      //   console.log('in sizeScrollbar');
+      //   var remainder = scrollContent.width() - scrollPane.width();
+      //   var proportion = remainder / scrollContent.width();
+      //   var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
+      //   torqueTime.find( ".ui-slider-handle" ).css({
+      //     width: handleSize,
+      //     "margin-left": -handleSize / 2
+      //   });
+      //   handleHelper.width( "" ).width( torqueTime.width() - handleSize );
+      // }
+      
+      // //reset slider value based on scroll content position
+      // function resetValue() {
+      //   console.log('in resetValue');
+      //   var remainder = scrollPane.width() - scrollContent.width();
+      //   var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+      //     parseInt( scrollContent.css( "margin-left" ) );
+      //   var percentage = Math.round( leftVal / remainder * 100 );
+      //   torqueTime.slider( "value", percentage );
+      // }
+
+      // sizeScrollbar();
+      // resetValue();
+
+
+
 
       console.log('steps', torqueLayer.options.steps);
 
@@ -162,6 +192,8 @@ function main() {
         if (changes.step === 0) {
           totalDeaths = 0;
           $('#bodies').empty();
+          $('#bodyCount').html('0');
+          $('#childrenBodyCount').html('0');
           
         }
 
