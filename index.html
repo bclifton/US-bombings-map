@@ -7,29 +7,23 @@
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="stylesheet" href="https://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
-    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+    <link rel="stylesheet" type="text/css" href="css/cartodb.css">
+    <link rel="stylesheet" type="text/css" href="css/mapbox.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="user.css">
     <!--[if lte IE 8]>
       <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
     <![endif]-->
   </head>
   <body>
-
-
     <div class="map" id="map"></div>
 
     <div id="content">
 
       <div id="header">
         <h1 id="title">US Airstrikes Since Barack Obama Won the Nobel Peace Prize in 2009</h1>
-
         <p class="credits">
         Data sources: <a href="http://dronestre.am/" target="blank">Dronestream</a> (Pakistan, Somalia, Yemen), <a href="http://www.theguardian.com/news/datablog/2011/may/22/nato-libya-data-journalism-operations-country#data" target="blank">The Guardian</a> (Libya), <a href="https://en.wikipedia.org/wiki/Civilian_casualties_in_the_War_in_Afghanistan_(2001%E2%80%93present)#Civilian_and_overall_casualties_.282009.29" target="blank">Wikipedia</a> (Afghanistan), <a href="http://airstrik.es/2014/10/oct-19-u-s-saudi-arabia-and-the-united-arab-emirates-conduct-twenty-three-airstrikes-against-isil-in-iraq-and-syria/" target="blank">Air Drops and Airstrikes </a>(Iraq, Syria)
         | <a href="https://github.com/bclifton/US-bombings-map/blob/master/assets/BombingsData.ods" target="blank">Compiled Data</a></p>
@@ -41,7 +35,6 @@
         <div class="scroll-bar-wrap ui-widget-content">
           <div id="torque-slider"></div>
         </div>
-        <!-- <div id="blank"></div> -->
       </div>
 
       <div id="list">
@@ -54,31 +47,21 @@
           <h4>Number of Children Killed</h4>
           <h2 id="childrenBodyCount"></h2>
         </div>
-
-
       </div>
+
       <hr>
       <div id="bodies"></div>
-      <!-- <div id="children"></div> -->
 
     </div>
 
-
-
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js'></script>
-
-  	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
-    <script type-"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
-
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'></script>
-    <script src="https://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
-    <!--<script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.uncompressed.js"></script>-->
-    <!--<script src='https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/cartodb.core.js'></script>-->
-
-    <script src='https://cartodb-libs.global.ssl.fastly.net/torque.full.js'></script>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script type="text/javascript" src='js/underscore.js'></script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type-"text/javascript" src="js/d3.min.js"></script>
+    <script type-"text/javascript" src='js/mapbox.js'></script>
+    <script type-"text/javascript" src="js/cartodb.v3.js"></script>
+    <script type-"text/javascript" src='js/torque.full.js'></script>
 
     <script src='main.js'></script>
   </body>

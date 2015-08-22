@@ -1,34 +1,24 @@
-var username = 'bclifton';
-
 function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-
 function main() {
-
   var height = ($(window).height() / 2);
-  console.log('height', height);
-
+  // console.log('height', height);
   $('#map').css('height', height);
-
-
   var map = new L.map('map', {
-    // center: [31.783333, 35.216667],
     center: [22.416667, 42.816667],
     zoom: 3,
     minZoom: 3,
     maxZoom: 7
   });
 
-  // creates the MapBox baselayer:
   L.mapbox.tileLayer('bclifton.j3dc99p7', {
     accessToken: 'pk.eyJ1IjoiYmNsaWZ0b24iLCJhIjoicWNXT0Z6OCJ9.JvNO6GIbU8BZ-8LLSEwz2Q',
     attribution: 'Brian Clifton | <a href="http://cartodb.com/">CartoDB</a> | <a href="https://www.mapbox.com/">MapBox</a>'
   }).addTo(map);
 
-
-  var torqueStyle = 
+  var torqueStyle =
     'Map {'+
     '-torque-frame-count:1024;'+
     '-torque-animation-duration:30;'+
@@ -91,8 +81,6 @@ function main() {
 
 
   d3.csv('assets/Bombings_deathsByDate.csv', function(data) {
-    // console.log(data);
-
     var deathsByDate = {};
     var totalDeaths = 0;
     var childDeaths = 0;
@@ -109,19 +97,6 @@ function main() {
 
     init_slider(bombBlastsTorque);
 
-    // var bodies = d3.select('#bodies')
-    //   .append('svg')
-    //   .attr('width', '20px')
-    //   .attr('height', '20px')
-    //   .append('rect')
-    //   .attr('x', 0)
-    //   .attr('y', 0)
-    //   .attr('width', '20px')
-    //   .attr('height', '20px')
-    //   .attr('fill', 'red');
-
-
-
     function init_slider(torqueLayer) {
       var torqueTime = $('#torque-time');
       $("#torque-slider").slider({
@@ -136,41 +111,6 @@ function main() {
         }
       });
 
-
-
-      // var scrollPane = $('#nav');
-      // var scrollContent = $('.scroll-bar-wrap');
-      // var handleHelper = torqueTime.find('.ui-slider-handle').parent();
-      // console.log('handleHelper', handleHelper);
-
-      // function sizeScrollbar() {
-      //   console.log('in sizeScrollbar');
-      //   var remainder = scrollContent.width() - scrollPane.width();
-      //   var proportion = remainder / scrollContent.width();
-      //   var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
-      //   torqueTime.find( ".ui-slider-handle" ).css({
-      //     width: handleSize,
-      //     "margin-left": -handleSize / 2
-      //   });
-      //   handleHelper.width( "" ).width( torqueTime.width() - handleSize );
-      // }
-      
-      // //reset slider value based on scroll content position
-      // function resetValue() {
-      //   console.log('in resetValue');
-      //   var remainder = scrollPane.width() - scrollContent.width();
-      //   var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
-      //     parseInt( scrollContent.css( "margin-left" ) );
-      //   var percentage = Math.round( leftVal / remainder * 100 );
-      //   torqueTime.slider( "value", percentage );
-      // }
-
-      // sizeScrollbar();
-      // resetValue();
-
-
-
-
       console.log('steps', torqueLayer.options.steps);
 
       torqueLayer.toggle();
@@ -184,8 +124,6 @@ function main() {
           value: changes.step
         });
 
-        // showEvent(changes, torqueLayer, '04-11-11', '#libya');
-
         var month_year = changes.time.toString().substr(4).split(' ');
 
         // resets the 'bodies' seciton:
@@ -194,7 +132,6 @@ function main() {
           $('#bodies').empty();
           $('#bodyCount').html('0');
           $('#childrenBodyCount').html('0');
-          
         }
 
         // pauses at the end of the slider:
@@ -217,31 +154,25 @@ function main() {
           $('#childrenBodyCount').html(childDeaths);
 
           // draws the adult body svgs:
-          for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {         
+          for (var i = 0; i < +deathsByDate[torqueDate].deaths_max; i++) {
             var margin = getRandomArbitrary(-3, 5);
             var r = Math.random()*10;
-
             if (r > 3) {
               var num = getRandomArbitrary(1, 14);
-              $('#bodies').append('<img src="img/man-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
+              $('#bodies').append('<img src="img/man-'+ num +'.svg" style="margin-left:'+ margin +'px;">')
             } else {
               var num = getRandomArbitrary(1, 9);
-              $('#bodies').append('<img src="img/woman-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
+              $('#bodies').append('<img src="img/woman-'+ num +'.svg" style="margin-left:'+ margin +'px;">')
             }
           }
 
           // draws the children body svgs:
-          for (var i = 0; i < +deathsByDate[torqueDate].deaths_children; i++) {         
-
+          for (var i = 0; i < +deathsByDate[torqueDate].deaths_children; i++) {
             var margin = getRandomArbitrary(-3, 5);
             var num = getRandomArbitrary(1, 13);
-            $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;">') 
-            
+            $('#bodies').append('<img src="img/child-'+ num +'.svg" style="margin-left:'+ margin +'px;">')
           }
-
-
         }
-
 
         //As long as the date is undefined (at the very start) do not display the date
         if(typeof month_year[2] === 'undefined') {
@@ -257,30 +188,7 @@ function main() {
         $(this).toggleClass('glyphicon-pause');
       });
     };
-});
-
-/////////////////
-
-  /**
-		   * inits slider and a small play/pause button
-		   */
-
-  function showEvent(changes, torqueLayer, dayTrigger, eventID) {
-    if (moment(changes.time).format('MM-DD-YY') === dayTrigger) {
-
-      console.log('event Triggered');
-      // Show the event:
-      // d3.select(eventID).classed('visible', true);
-
-      torqueLayer.toggle();
-
-      setTimeout(function(){
-        torqueLayer.toggle();
-      }, 1000);
-    }
-  }
-
-
+  }); // end d3.csv()
 } // ends main()
 
 window.onload = main;
